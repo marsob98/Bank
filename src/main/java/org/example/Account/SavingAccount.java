@@ -1,9 +1,10 @@
 package org.example.Account;
 
+import org.example.Bank;
 import org.example.Customer;
 
 public class SavingAccount extends Account {
-    public SavingAccount(int accountNumber, Customer owner) {
-        super(accountNumber, owner);
+    public SavingAccount(Customer owner, Bank bank) {
+        super(owner, bank);
     }
 }

@@ -10,5 +10,7 @@ public class Bank {
     public List<Account> accounts = new ArrayList<>();
     public List<Transaction> allTransactions = new ArrayList<>();
 
-
+    public void addTransaction(Transaction t) {
+        allTransactions.add(t);
+    }
 }
