@@ -1,9 +1,7 @@
 package org.example.Account;
 
-import org.example.Bank;
-import org.example.Customer;
-import org.example.Transaction;
-import org.example.TransactionType;
+import org.example.*;
+import org.example.Exception.AccountBlockedException;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -81,7 +79,7 @@ public abstract class Account {
         return balance;
     }
 
-    public int getAccountNumber() {
+    public String getAccountNumber() {
         return accountNumber;
     }
 
@@ -90,6 +88,10 @@ public abstract class Account {
             System.out.println(transaction);
         }
 
+    }
+
+    public boolean isBlocked() {
+        return isBlocked;
     }
 
     public void blockAccount() {

@@ -24,14 +24,19 @@ public class Transaction {
 
     @Override
     public String toString() {
-        return "Transaction{" +
-                "transactionId=" + transactionId +
-                ", amount=" + amount +
-                ", sourceAccount=" + sourceAccount +
-                ", targetAccount=" + targetAccount +
-                ", timestamp=" + timestamp +
-                ", type=" + type +
-                '}';
+        String src = (sourceAccount != null) ?
+                sourceAccount.getAccountNumber() : "EXTERNAL";
+        String trg = (targetAccount != null) ?
+                targetAccount.getAccountNumber() : "EXTERNAL";
+
+        return String.format("#%d, %s, %.2f zł (%s -> %s) %s",
+        transactionId,
+        type,
+        amount,
+        src,
+        trg,
+        timestamp.toLocalTime()
+        );
     }
 
 }

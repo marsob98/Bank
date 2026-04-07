@@ -2,6 +2,7 @@ package org.example;
 
 import org.example.Account.Account;
 import org.example.Account.CheckingAccount;
+import org.example.Exception.InvalidPeselException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +14,10 @@ public class Customer {
     private List<Account> accounts = new ArrayList<>();
 
     public Customer(String firstName, String lastName, long pesel) {
+        String peselStr = String.valueOf(pesel);
+        if (peselStr.length() != 11) {
+            throw new InvalidPeselException("PESEL must have 11 digits");
+        }
         this.firstName = firstName;
         this.lastName = lastName;
         this.pesel = pesel;
