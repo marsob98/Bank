@@ -2,6 +2,7 @@ package org.example.Account;
 
 import org.example.*;
 import org.example.Exception.AccountBlockedException;
+import org.example.Exception.InsufficientFundsException;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -46,34 +47,45 @@ public abstract class Account {
     }
 
     public void withdraw(double amount) {
-        if (balance - amount >= 0) {
-            balance -= amount;
-            Transaction t = new Transaction(TransactionType.WITHDRAWAL,
-                    amount,
-                    this,
-                    null,
-                    LocalDateTime.now());
-            transactionsList.add(t);
-            bank.addTransaction(t);
-            System.out.println("You withdrew " + amount);
+        if (isBlocked) {
+            throw new AccountBlockedException("Account is blocked");
         }
+        if (amount <= 0) {
+            throw new IllegalArgumentException("More than 0");
+        }
+        if (!canWithdraw(amount)) {
+            throw new InsufficientFundsException("No money" +
+                    "");
+        }
+
+        balance -= amount;
+        Transaction t = new Transaction(TransactionType.WITHDRAWAL,
+                amount,
+                this,
+                null,
+                LocalDateTime.now());
+        transactionsList.add(t);
+        bank.addTransaction(t);
+        bank.detectFraud(this);
+
+        System.out.println("You paid out " + amount + " zł");
 
     }
 
-    public void transfer(double amount, Account targetAccount) {
-        if (balance - amount >= 0) {
-            balance -= amount;
-            targetAccount.balance += amount;
-            Transaction t = new Transaction(TransactionType.TRANSFER,
-                    amount,
-                    this,
-                    targetAccount,
-                    LocalDateTime.now());
-            transactionsList.add(t);
-            this.bank.addTransaction(t);
-            System.out.println("You've send " + amount + " to " + targetAccount.getOwner() + " account");
-        }
-    }
+//    public void transfer(double amount, Account targetAccount) {
+//        if (balance - amount >= 0) {
+//            balance -= amount;
+//            targetAccount.balance += amount;
+//            Transaction t = new Transaction(TransactionType.TRANSFER,
+//                    amount,
+//                    this,
+//                    targetAccount,
+//                    LocalDateTime.now());
+//            transactionsList.add(t);
+//            this.bank.addTransaction(t);
+//            System.out.println("You've send " + amount + " to " + targetAccount.getOwner() + " account");
+//        }
+//    }
 
     public double getBalance() {
         return balance;
@@ -104,5 +116,9 @@ public abstract class Account {
 
     public Customer getOwner() {
         return owner;
+    }
+
+    public List<Transaction> getTransactionsList() {
+        return transactionsList;
     }
 }

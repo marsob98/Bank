@@ -10,10 +10,10 @@ import java.util.List;
 public class Customer {
     private String firstName;
     private String lastName;
-    private long pesel;
+    private String pesel;
     private List<Account> accounts = new ArrayList<>();
 
-    public Customer(String firstName, String lastName, long pesel) {
+    public Customer(String firstName, String lastName, String pesel) {
         String peselStr = String.valueOf(pesel);
         if (peselStr.length() != 11) {
             throw new InvalidPeselException("PESEL must have 11 digits");
@@ -34,15 +34,8 @@ public class Customer {
         }
     }
 
-    public CheckingAccount openCheckingAccount(Bank bank) {
-        CheckingAccount acc = new CheckingAccount(this, bank);
-        accounts.add(acc);
-        return  acc;
+    @Override
+    public String toString() {
+        return firstName + " " + lastName + " " + pesel;
     }
-
-
-
-
-
-
 }

@@ -22,6 +22,14 @@ public class Transaction {
         transactionId = number++;
     }
 
+    public TransactionType getType() {
+        return type;
+    }
+
+    public double getAmount() {
+        return amount;
+    }
+
     @Override
     public String toString() {
         String src = (sourceAccount != null) ?
