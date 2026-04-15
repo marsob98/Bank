@@ -1,7 +1,6 @@
 package org.example;
 
 import org.example.Account.Account;
-import org.example.Account.CheckingAccount;
 import org.example.Exception.InvalidPeselException;
 
 import java.util.ArrayList;
@@ -14,16 +13,18 @@ public class Customer {
     private List<Account> accounts = new ArrayList<>();
 
     public Customer(String firstName, String lastName, String pesel) {
-        String peselStr = String.valueOf(pesel);
-        if (peselStr.length() != 11) {
+        if (pesel ==  null || pesel.length() != 11) {
             throw new InvalidPeselException("PESEL must have 11 digits");
+        }
+        if (!pesel.matches("\\d{11}")) {
+            throw new InvalidPeselException("PESEL must contains only digits");
         }
         this.firstName = firstName;
         this.lastName = lastName;
         this.pesel = pesel;
     }
 
-    public void addCustomer(Account account) {
+    public void addAccount(Account account) {
         accounts.add(account);
     }
 
@@ -37,5 +38,17 @@ public class Customer {
     @Override
     public String toString() {
         return firstName + " " + lastName + " " + pesel;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public String getPesel() {
+        return pesel;
     }
 }

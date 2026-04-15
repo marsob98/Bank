@@ -4,48 +4,59 @@ import org.example.Account.Account;
 import org.example.Account.CheckingAccount;
 import org.example.Account.SavingAccount;
 
+import java.util.Scanner;
+
 public class Main {
     public static void main(String[] args) {
         Bank bank = new Bank();
+        bank.loadCustomersFromFile("Transactions.csv");
+        bank.loadAccountsFromFile("Accounts.csv");
+        bank.loadTransactionsFromFile("Transactions.csv");
+        bank.showAllCustomers();
 
-//        Account account1 = new CheckingAccount(customer1, bank);
-//        Account account2 = new SavingAccount(customer2, bank);
+        Scanner scanner = new Scanner(System.in);
+        boolean running = true;
 
-        Customer marcin = bank.registerCustomer("Marcin", "Sobieraj", "98011508734");
-        Customer cinek = bank.registerCustomer("Cinek", "Sobieraj", "98011508735");
+        while (running) {
+            System.out.println("MENU");
+            System.out.println("1. Add customer");
+            System.out.println("2. Add account");
+            System.out.println("3. Make transaction");
+            System.out.println("4. Show all customers");
+            System.out.println("5. Exit");
 
-//        Account chekingMarcin = new CheckingAccount(marcin, bank);
-        Account savingCinek = new SavingAccount(cinek, bank);
+            int choice = scanner.nextInt();
+            scanner.nextLine();
 
-        Account chekingMarcin = bank.openCheckingAccountFor(marcin);
+            switch (choice) {
+                case 1 -> {
+                    System.out.println("Name: ");
+                    String firstName = scanner.nextLine();
+                    System.out.println("Last name: ");
+                    String lastName = scanner.nextLine();
+                    System.out.println("PESEL: ");
+                    String pesel = scanner.nextLine();
+                    bank.registerCustomer(firstName, lastName, pesel);
+                    System.out.println("Customer added");
+                }
+            case 4 -> bank.showAllCustomers();
+
+            case 5 -> {
+                bank.saveCustomersToFile("Customers.csv");
+                bank.saveAccountsToFile("Accounts.csv");
+                bank.saveTransactionToFile("Transactions.csv");
+                System.out.println("Exit program");
+                running = false;
+            }
+            }
+        }
 
 
-        chekingMarcin.deposit(100000);
-        savingCinek.deposit(3000);
 
-        System.out.println(savingCinek.getBalance());
-        System.out.println(chekingMarcin.getBalance());
-        bank.transfer(chekingMarcin.getAccountNumber(), savingCinek.getAccountNumber(), 3000);
-        System.out.println(savingCinek.getBalance());
-        System.out.println(chekingMarcin.getBalance());
 
-        chekingMarcin.withdraw(1000);
-        chekingMarcin.withdraw(1000);
-        chekingMarcin.withdraw(1000);
-        chekingMarcin.withdraw(1000);
-        chekingMarcin.withdraw(1000);
-        chekingMarcin.withdraw(1000);
-        chekingMarcin.withdraw(1000);
-        chekingMarcin.withdraw(1000);
-        chekingMarcin.withdraw(1000);
-        chekingMarcin.withdraw(1000);
-        chekingMarcin.withdraw(1000);
-        chekingMarcin.withdraw(1000);
-        chekingMarcin.withdraw(1000);
-        chekingMarcin.withdraw(1000);
-        chekingMarcin.withdraw(1000);
-        chekingMarcin.withdraw(1000);
-        chekingMarcin.withdraw(1000);
+
+
+
 
 
     }

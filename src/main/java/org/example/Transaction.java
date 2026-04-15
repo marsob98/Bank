@@ -30,6 +30,22 @@ public class Transaction {
         return amount;
     }
 
+    public int getTransactionId() {
+        return transactionId;
+    }
+
+    public Account getSourceAccount() {
+        return sourceAccount;
+    }
+
+    public Account getTargetAccount() {
+        return targetAccount;
+    }
+
+    public LocalDateTime getTimestamp() {
+        return timestamp;
+    }
+
     @Override
     public String toString() {
         String src = (sourceAccount != null) ?

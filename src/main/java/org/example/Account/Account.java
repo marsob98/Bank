@@ -27,6 +27,10 @@ public abstract class Account {
         isBlocked = false;
     }
 
+    public void setBalance(double balance) {
+        this.balance = balance;
+    }
+
     public void deposit(double amount) {
         if (isBlocked) {
             throw new AccountBlockedException("Account blocked");
@@ -72,20 +76,6 @@ public abstract class Account {
 
     }
 
-//    public void transfer(double amount, Account targetAccount) {
-//        if (balance - amount >= 0) {
-//            balance -= amount;
-//            targetAccount.balance += amount;
-//            Transaction t = new Transaction(TransactionType.TRANSFER,
-//                    amount,
-//                    this,
-//                    targetAccount,
-//                    LocalDateTime.now());
-//            transactionsList.add(t);
-//            this.bank.addTransaction(t);
-//            System.out.println("You've send " + amount + " to " + targetAccount.getOwner() + " account");
-//        }
-//    }
 
     public double getBalance() {
         return balance;

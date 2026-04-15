@@ -7,7 +7,7 @@ public class SavingAccount extends Account {
     private static final  double INTEREST_RATE = 0.03;
     public SavingAccount(Customer owner, Bank bank) {
         super(owner, bank);
-        bank.accounts.add(this);
+
     }
 
     @Override

@@ -13,7 +13,6 @@ public class CheckingAccount extends Account {
 
     public CheckingAccount(Customer owner, Bank bank) {
         super(owner, bank);
-        bank.accounts.add(this);
 
     }
 }
