@@ -9,7 +9,7 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         Bank bank = new Bank();
-        bank.loadCustomersFromFile("Transactions.csv");
+        bank.loadCustomersFromFile("Customers.csv");
         bank.loadAccountsFromFile("Accounts.csv");
         bank.loadTransactionsFromFile("Transactions.csv");
         bank.showAllCustomers();
@@ -38,6 +38,63 @@ public class Main {
                     String pesel = scanner.nextLine();
                     bank.registerCustomer(firstName, lastName, pesel);
                     System.out.println("Customer added");
+                }
+                case 2 -> {
+                    System.out.println("PESEL: ");
+                    String pesel = scanner.nextLine();
+
+                    Customer customer = bank.findCustomerByPesel(pesel);
+                    if (customer == null) {
+                        System.out.println("Customer not found");
+                        break;
+                    }
+
+                    System.out.println("1. SAVINGS");
+                    System.out.println("2. CHECKING");
+
+                    int c = scanner.nextInt();
+                    scanner.nextLine();
+
+                    if (c == 1) {
+                        bank.openSavingAccountFor(customer);
+                    } else if (c == 2) {
+                        bank.openCheckingAccountFor(customer);
+                    } else {
+                        System.out.println("Wrong choice");
+                    }
+
+                }
+                case 3 -> {
+                    System.out.println("Account nr: ");
+                    String accNum = scanner.nextLine();
+
+                    Account acc = bank.findAccountByNumber(accNum);
+
+                    if (acc == null) {
+                        System.out.println("Account not found");
+                        break;
+                    }
+
+                    System.out.println("1. Deposit");
+                    System.out.println("2. Withdraw");
+                    System.out.println("3. Transfer");
+
+                    int c = scanner.nextInt();
+                    scanner.nextLine();
+
+                    System.out.println("Amount:");
+                    double amount = scanner.nextDouble();
+                    scanner.nextLine();
+
+                    if (c == 1) {
+                        acc.deposit(amount);
+                    } else if (c == 2) {
+                        acc.withdraw(amount);
+                    } else if (c == 3) {
+                        System.out.println("Account nr: ");
+                        String targetAcc = scanner.nextLine();
+                        bank.transfer(accNum, targetAcc, amount);
+                    }
                 }
             case 4 -> bank.showAllCustomers();
 

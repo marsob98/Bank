@@ -146,8 +146,11 @@ public class Bank {
                     customers.add(customer);
                 }
             }
+
+            System.out.println("Loaded " + customers.size() + " customers from file " + filename);
+
         } catch (IOException e) {
-            System.out.println("Error loading cutomes: " + e.getMessage());
+            System.out.println("Error loading customers: " + e.getMessage());
         }
 
      }
@@ -174,8 +177,10 @@ public class Bank {
                         account.getBalance(),
                         account.isBlocked()
                 );
-                System.out.println("Saved " + accounts.size() + " accounts");
             }
+
+            System.out.println("Saved " + accounts.size() + " accounts");
+
         } catch (IOException e) {
             System.out.println("Error saving accounts: " + e.getMessage());
         }
@@ -221,6 +226,9 @@ public class Bank {
                     owner.addAccount(account);
                 }
             }
+
+            System.out.println("Loaded " + accounts.size() + " accounts from file " + filename);
+
         } catch (IOException e) {
             System.out.println("Something gone wrong " + e.getMessage());
         }
@@ -243,9 +251,9 @@ public class Bank {
                         source,
                         target,
                         transaction.getTimestamp());
-                System.out.println("Saved " + allTransactions.size() + " transactions to file " + filename);
             }
 
+            System.out.println("Saved " + allTransactions.size() + " transactions to file " + filename);
 
         } catch (IOException e) {
             System.out.println(e.getMessage());
@@ -289,10 +297,10 @@ public class Bank {
                         target.getTransactionsList().add(transaction);
                     }
                 }
-
-                System.out.println("Loaded " + allTransactions.size() + " transactions");
-
             }
+
+            System.out.println("Loaded " + allTransactions.size() + " transactions");
+
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
