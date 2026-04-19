@@ -9,6 +9,7 @@ import java.io.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class Bank {
     public List<Customer> customers = new ArrayList<>();
@@ -25,31 +26,22 @@ public class Bank {
         return c;
     }
 
-    public Account findAccountByNumber(String accountNumber) {
-        for (Account acc : accounts) {
-            if (acc.getAccountNumber().equals(accountNumber)) {
-                return acc;
-            }
-        }
-        return null;
+    public Optional<Account> findAccountByNumber(String accountNumber) {
+        return accounts.stream().filter(account -> account.getAccountNumber().equals(accountNumber))
+                .findFirst();
     }
 
-    public Customer findCustomerByPesel(String pesel) {
-        for (Customer customer : customers) {
-            if (customer.getPesel().equals(pesel)) {
-                return customer;
-            }
-        }
-        return null;
+
+    public Optional<Customer> findCustomerByPesel(String pesel) {
+        return customers.stream().filter(customer -> customer.getPesel().equals(pesel)).findFirst();
     }
 
     public void transfer(String sourceAccount, String targetAccount, double amount) {
-        Account source = findAccountByNumber(sourceAccount);
-        Account target = findAccountByNumber(targetAccount);
+        Account source = findAccountByNumber(sourceAccount).orElseThrow(()
+                -> new AccountNotFoundException("Account not found"));
+        Account target = findAccountByNumber(targetAccount).orElseThrow(()
+                -> new AccountNotFoundException("Account not found"));
 
-        if (source == null || target == null) {
-            throw new AccountNotFoundException("Account not found");
-        }
 
         source.withdraw(amount);
         target.deposit(amount);
@@ -206,7 +198,8 @@ public class Bank {
                     double balance = Double.parseDouble(parts[3]);
                     boolean isBlocked = Boolean.parseBoolean(parts[4]);
 
-                    Customer owner = findCustomerByPesel(ownerPesel);
+                    Customer owner = findCustomerByPesel(ownerPesel).orElseThrow(()
+                            -> new AccountNotFoundException("Account not found"));
                     if (owner == null) {
                         continue;
                     }
@@ -282,8 +275,10 @@ public class Bank {
                     String targetNum = parts[4];
                     LocalDateTime timestamp = LocalDateTime.parse(parts[5]);
 
-                    Account source = sourceNum.isEmpty() ? null : findAccountByNumber(sourceNum);
-                    Account target = targetNum.isEmpty() ? null : findAccountByNumber(targetNum);
+                    Account source = sourceNum.isEmpty() ? null : findAccountByNumber(sourceNum).orElseThrow(()
+                            -> new AccountNotFoundException("Account not found"));
+                    Account target = targetNum.isEmpty() ? null : findAccountByNumber(targetNum).orElseThrow(()
+                            -> new AccountNotFoundException("Account not found"));
 
                     Transaction transaction = new Transaction(type, balance, source, target, timestamp);
 

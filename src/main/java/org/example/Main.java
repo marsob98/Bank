@@ -3,8 +3,10 @@ package org.example;
 import org.example.Account.Account;
 import org.example.Account.CheckingAccount;
 import org.example.Account.SavingAccount;
+import org.example.Exception.AccountNotFoundException;
 
-import java.util.Scanner;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Main {
     public static void main(String[] args) {
@@ -43,7 +45,8 @@ public class Main {
                     System.out.println("PESEL: ");
                     String pesel = scanner.nextLine();
 
-                    Customer customer = bank.findCustomerByPesel(pesel);
+                    Customer customer = bank.findCustomerByPesel(pesel).orElseThrow(()
+                            -> new AccountNotFoundException("Account not found"));
                     if (customer == null) {
                         System.out.println("Customer not found");
                         break;
@@ -68,12 +71,10 @@ public class Main {
                     System.out.println("Account nr: ");
                     String accNum = scanner.nextLine();
 
-                    Account acc = bank.findAccountByNumber(accNum);
+                    Account acc = bank.findAccountByNumber(accNum).orElseThrow(()
+                            -> new AccountNotFoundException("Account not found"));
 
-                    if (acc == null) {
-                        System.out.println("Account not found");
-                        break;
-                    }
+
 
                     System.out.println("1. Deposit");
                     System.out.println("2. Withdraw");
@@ -107,6 +108,19 @@ public class Main {
             }
             }
         }
+
+        Map<String, List<Account>> gruppedAccounts = bank.accounts.stream()
+                .collect(Collectors.groupingBy(account -> account instanceof CheckingAccount ? "CHECKING" : "SAVINGS"));
+
+        Map<TransactionType, Long> gruppedTransactions = bank.allTransactions.stream()
+                .collect(Collectors.groupingBy(Transaction::getType, Collectors.counting()));
+
+        Map<String, Double> gruppedAndBalance = bank.accounts.stream()
+                .collect(Collectors.groupingBy(account -> account.getOwner().getPesel(), Collectors.summingDouble(Account::getBalance)));
+
+
+
+
 
 
 
