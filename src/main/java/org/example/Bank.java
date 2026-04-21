@@ -9,6 +9,7 @@ import java.io.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 public class Bank {
@@ -162,7 +163,7 @@ public class Bank {
 
             for (Account account : accounts) {
                 String accountType = (account instanceof CheckingAccount) ? "CHECKING" : "SAVINGS";
-                writer.printf("%s,%s,%s,%.2f,%b%n",
+                writer.printf(Locale.US, "%s,%s,%s,%.2f,%b%n",
                         account.getAccountNumber(),
                         accountType,
                         account.getOwner().getPesel(),
@@ -171,7 +172,7 @@ public class Bank {
                 );
             }
 
-            System.out.println("Saved " + accounts.size() + " accounts");
+            System.out.println("Saved " + accounts.size() + " accounts to file " + filename);
 
         } catch (IOException e) {
             System.out.println("Error saving accounts: " + e.getMessage());
@@ -198,11 +199,11 @@ public class Bank {
                     double balance = Double.parseDouble(parts[3]);
                     boolean isBlocked = Boolean.parseBoolean(parts[4]);
 
-                    Customer owner = findCustomerByPesel(ownerPesel).orElseThrow(()
-                            -> new AccountNotFoundException("Account not found"));
-                    if (owner == null) {
+                    Optional<Customer> optionalCustomer = findCustomerByPesel(ownerPesel);
+                    if (optionalCustomer.isEmpty()) {
                         continue;
                     }
+                    Customer owner = optionalCustomer.get();
 
                     Account account;
                     if (accountType.equals("CHECKING")) {
@@ -212,6 +213,7 @@ public class Bank {
                     }
 
                     account.setBalance(balance);
+                    account.setAccountNumber(accountNumber);
                     if (isBlocked) {
                         account.blockAccount();
                     }

@@ -45,12 +45,12 @@ public class Main {
                     System.out.println("PESEL: ");
                     String pesel = scanner.nextLine();
 
-                    Customer customer = bank.findCustomerByPesel(pesel).orElseThrow(()
-                            -> new AccountNotFoundException("Account not found"));
-                    if (customer == null) {
+                    Optional<Customer> customerOptional = bank.findCustomerByPesel(pesel);
+                    if (customerOptional.isEmpty()) {
                         System.out.println("Customer not found");
                         break;
                     }
+                    Customer customer = customerOptional.get();
 
                     System.out.println("1. SAVINGS");
                     System.out.println("2. CHECKING");

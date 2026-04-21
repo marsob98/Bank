@@ -111,4 +111,8 @@ public abstract class Account {
     public List<Transaction> getTransactionsList() {
         return transactionsList;
     }
+
+    public void setAccountNumber(String accountNumber) {
+        this.accountNumber = accountNumber;
+    }
 }
