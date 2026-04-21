@@ -277,10 +277,8 @@ public class Bank {
                     String targetNum = parts[4];
                     LocalDateTime timestamp = LocalDateTime.parse(parts[5]);
 
-                    Account source = sourceNum.isEmpty() ? null : findAccountByNumber(sourceNum).orElseThrow(()
-                            -> new AccountNotFoundException("Account not found"));
-                    Account target = targetNum.isEmpty() ? null : findAccountByNumber(targetNum).orElseThrow(()
-                            -> new AccountNotFoundException("Account not found"));
+                    Account source = sourceNum.isEmpty() ? null : findAccountByNumber(sourceNum).orElse(null);
+                    Account target = targetNum.isEmpty() ? null : findAccountByNumber(targetNum).orElse(null);
 
                     Transaction transaction = new Transaction(type, balance, source, target, timestamp);
 
