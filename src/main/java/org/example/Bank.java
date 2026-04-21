@@ -64,14 +64,11 @@ public class Bank {
             int size = transactionsList.size();
             int fromIndex = Math.max(0, size - 10);
             List<Transaction> last10Transactions = transactionsList.subList(fromIndex, size);
-            int counter = 0;
-            for (Transaction transaction : last10Transactions) {
-                if (transaction.getType().equals(TransactionType.WITHDRAWAL)) {
-                    if (transaction.getAmount() >= 1000) {
-                        counter++;
-                    }
-                }
-            }
+
+            long counter = last10Transactions.stream()
+                    .filter(transaction -> transaction.equals(TransactionType.WITHDRAWAL))
+                    .filter(transaction -> transaction.getAmount() >= 1000).count();
+
             if (counter >= 5) {
                 account.blockAccount();
                 System.out.println("FRAUD DETECTED! ACCOUNT "+ account.getAccountNumber() +" IS BLOCKED");
