@@ -1,0 +1,3 @@
+accountNumber,accountType,ownerPesel,balance,isBlocked
+PL1000,SAVINGS,12345678911,99500,00,false
+PL1001,CHECKING,12345678999,100500,00,false

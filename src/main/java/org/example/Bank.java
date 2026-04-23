@@ -66,7 +66,7 @@ public class Bank {
             List<Transaction> last10Transactions = transactionsList.subList(fromIndex, size);
 
             long counter = last10Transactions.stream()
-                    .filter(transaction -> transaction.equals(TransactionType.WITHDRAWAL))
+                    .filter(transaction -> transaction.getType().equals(TransactionType.WITHDRAWAL))
                     .filter(transaction -> transaction.getAmount() >= 1000).count();
 
             if (counter >= 5) {
